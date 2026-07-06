@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     chunk_size_tokens: int = 800
     chunk_overlap_tokens: int = 150
     retrieval_top_k: int = 5
-    retrieval_min_similarity: float = 0.2
+    retrieval_min_similarity: float = 0.1
 
     max_upload_size_mb: int = 25
     cors_origins: str = "http://localhost:3000"
