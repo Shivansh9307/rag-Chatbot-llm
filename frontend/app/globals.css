@@ -2,38 +2,22 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --background: #e9edf5;
-  --foreground: #1c1c1e;
+  --background: #000000;
+  --foreground: #ffffff;
 
-  --glass-tint: 255 255 255;
-  --glass-tint-alpha: 0.55;
-  --glass-tint-alpha-strong: 0.72;
+  --glass-tint: 0 0 0;
+  --glass-tint-alpha: 0.4;
+  --glass-tint-alpha-strong: 0.6;
   --glass-border: 255 255 255;
-  --glass-border-alpha: 0.4;
-  --glass-highlight-alpha: 0.65;
-  --glass-shadow-alpha: 0.12;
+  --glass-border-alpha: 0.1;
+  --glass-shadow-alpha: 0.4;
 
-  --glass-blur-sm: 8px;
-  --glass-blur-md: 20px;
-  --glass-blur-lg: 40px;
+  --glass-blur-sm: 12px;
+  --glass-blur-md: 24px;
+  --glass-blur-lg: 64px;
 
   --radius-md: 1.25rem;
   --radius-lg: 1.75rem;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0b0b10;
-    --foreground: #f2f2f7;
-
-    --glass-tint: 32 32 38;
-    --glass-tint-alpha: 0.5;
-    --glass-tint-alpha-strong: 0.68;
-    --glass-border: 255 255 255;
-    --glass-border-alpha: 0.1;
-    --glass-highlight-alpha: 0.16;
-    --glass-shadow-alpha: 0.4;
-  }
 }
 
 @theme inline {
@@ -55,73 +39,41 @@ body {
   overflow-x: hidden;
 }
 
-.aurora-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.aurora-bg span {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(80px);
-  opacity: 0.55;
-  animation: aurora-drift 22s ease-in-out infinite alternate;
-}
-
-.aurora-bg span:nth-child(1) {
-  top: -10%;
-  left: -8%;
-  width: 42vw;
-  height: 42vw;
-  background: radial-gradient(circle, #7dd3fc, transparent 70%);
-}
-
-.aurora-bg span:nth-child(2) {
-  top: 10%;
-  right: -12%;
-  width: 38vw;
-  height: 38vw;
-  background: radial-gradient(circle, #c4b5fd, transparent 70%);
-  animation-delay: -8s;
-}
-
-.aurora-bg span:nth-child(3) {
-  bottom: -15%;
-  left: 20%;
-  width: 46vw;
-  height: 46vw;
-  background: radial-gradient(circle, #fbcfe8, transparent 70%);
-  animation-delay: -14s;
-}
-
-@media (prefers-color-scheme: dark) {
-  .aurora-bg span {
-    opacity: 0.28;
-  }
-}
-
-@keyframes aurora-drift {
+@keyframes apple-glow {
   0% {
-    transform: translate(0, 0) scale(1);
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
   100% {
-    transform: translate(4%, 6%) scale(1.08);
+    background-position: 0% 50%;
   }
+}
+
+.animate-siri-glow {
+  background-size: 200% 200%;
+  animation: apple-glow 4s ease infinite;
+  background-image: linear-gradient(
+    60deg,
+    #4facfe,
+    #00f2fe,
+    #ff0844,
+    #ffb199,
+    #a18cd1,
+    #fbc2eb
+  );
 }
 
 @layer components {
   .glass-panel {
     background-color: rgb(var(--glass-tint) / var(--glass-tint-alpha));
     border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
-    backdrop-filter: blur(var(--glass-blur-md)) saturate(160%);
-    -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(160%);
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / var(--glass-highlight-alpha)),
-      0 8px 32px rgb(0 0 0 / var(--glass-shadow-alpha));
+    backdrop-filter: blur(var(--glass-blur-lg)) saturate(160%);
+    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(160%);
+    box-shadow: 0 8px 32px rgb(0 0 0 / var(--glass-shadow-alpha));
     border-radius: var(--radius-lg);
+    color: #fff;
   }
 
   .glass-panel-strong {
@@ -129,19 +81,27 @@ body {
     border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
     backdrop-filter: blur(var(--glass-blur-lg)) saturate(160%);
     -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(160%);
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / var(--glass-highlight-alpha)),
-      0 12px 40px rgb(0 0 0 / var(--glass-shadow-alpha));
+    box-shadow: 0 12px 40px rgb(0 0 0 / var(--glass-shadow-alpha));
     border-radius: var(--radius-lg);
+    color: #fff;
+  }
+
+  .apple-glass-panel {
+    @apply bg-black/40 backdrop-blur-3xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)] text-white;
   }
 
   .glass-pill {
-    background-color: rgb(var(--glass-tint) / var(--glass-tint-alpha-strong));
-    border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
+    background-color: rgb(255 255 255 / 0.1);
+    border: 1px solid rgb(var(--glass-border) / 0.2);
     backdrop-filter: blur(var(--glass-blur-md)) saturate(160%);
     -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(160%);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / var(--glass-highlight-alpha));
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
     border-radius: 9999px;
+    color: #fff;
+  }
+
+  .apple-glass-pill {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg text-white rounded-full;
   }
 
   .glass-interactive {
