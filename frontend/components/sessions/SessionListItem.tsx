@@ -1,6 +1,6 @@
 import clsx from "clsx";
+import { MessageSquare, X } from "lucide-react";
 
-import { GlassCard } from "@/components/glass/GlassCard";
 import type { ChatSessionOut } from "@/lib/types";
 
 type SessionListItemProps = {
@@ -12,21 +12,24 @@ type SessionListItemProps = {
 
 export function SessionListItem({ session, active, onSelect, onDelete }: SessionListItemProps) {
   return (
-    <div className="group relative">
-      <GlassCard onClick={onSelect} active={active}>
-        <span className={clsx("block truncate pr-6 text-sm", active && "font-medium")}>
-          {session.title}
-        </span>
-      </GlassCard>
+    <div
+      onClick={onSelect}
+      className={clsx(
+        "group px-3 py-2 rounded-xl cursor-pointer flex items-center gap-3 transition-colors text-sm font-medium",
+        active ? "bg-black/5 text-black" : "hover:bg-white/40 text-black/70",
+      )}
+    >
+      <MessageSquare className="w-4 h-4 opacity-50 shrink-0" />
+      <span className="truncate flex-1">{session.title}</span>
       <button
         onClick={(e) => {
           e.stopPropagation();
           onDelete();
         }}
         aria-label="Delete session"
-        className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full px-1.5 text-xs opacity-0 transition hover:opacity-100 group-hover:opacity-60"
+        className="shrink-0 rounded-full p-1 text-black/30 opacity-0 transition hover:bg-black/5 hover:text-black/70 group-hover:opacity-100"
       >
-        ✕
+        <X className="w-3.5 h-3.5" />
       </button>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import clsx from "clsx";
+import { UploadCloud } from "lucide-react";
 
 type DocumentUploadDropzoneProps = {
   onUpload: (file: File) => void;
@@ -31,8 +32,8 @@ export function DocumentUploadDropzone({ onUpload, disabled }: DocumentUploadDro
       }}
       onClick={() => inputRef.current?.click()}
       className={clsx(
-        "glass-panel glass-interactive cursor-pointer border-dashed px-4 py-6 text-center text-sm opacity-80",
-        isDragging && "ring-2 ring-white/70",
+        "cursor-pointer rounded-xl border border-dashed border-black/15 px-3 py-4 text-center text-xs font-medium text-black/50 transition-colors hover:bg-white/40",
+        isDragging && "bg-white/50 border-black/30",
         disabled && "pointer-events-none opacity-40",
       )}
     >
@@ -44,8 +45,9 @@ export function DocumentUploadDropzone({ onUpload, disabled }: DocumentUploadDro
         onChange={(e) => handleFiles(e.target.files)}
         disabled={disabled}
       />
-      Drop a document here or click to upload
-      <div className="mt-1 text-xs opacity-60">PDF, TXT, MD, DOCX</div>
+      <UploadCloud className="mx-auto mb-1 w-4 h-4 text-black/40" />
+      Drop a document or click to upload
+      <div className="mt-0.5 opacity-70">PDF, TXT, MD, DOCX</div>
     </div>
   );
 }

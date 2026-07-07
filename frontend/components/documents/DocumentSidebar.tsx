@@ -67,10 +67,14 @@ export function DocumentSidebar() {
   };
 
   return (
-    <div className="flex h-full flex-col gap-3 p-4">
-      <h2 className="px-1 text-sm font-semibold opacity-80">Documents</h2>
-      <DocumentUploadDropzone onUpload={handleUpload} disabled={isUploading} />
-      <div className="flex-1 space-y-2 overflow-y-auto">
+    <div className="p-4">
+      <h3 className="text-xs font-bold text-black/40 uppercase tracking-wider mb-3 px-2">
+        Knowledge Base
+      </h3>
+      <div className="mb-2 px-0">
+        <DocumentUploadDropzone onUpload={handleUpload} disabled={isUploading} />
+      </div>
+      <div className="space-y-1">
         {documents.map((doc) => (
           <DocumentListItem key={doc.id} doc={doc} onDelete={() => handleDelete(doc.id)} />
         ))}

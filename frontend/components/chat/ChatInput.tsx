@@ -1,5 +1,6 @@
 "use client";
 
+import { Mic, Plus, Send } from "lucide-react";
 import { useRef, useState } from "react";
 
 type ChatInputProps = {
@@ -22,16 +23,24 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto mb-8 px-4 relative z-50">
-      <div className="p-[2px] rounded-[2rem] animate-siri-glow shadow-[0_0_40px_rgba(255,255,255,0.1)]">
-        <div className="bg-[#1a1a1c]/90 backdrop-blur-3xl rounded-[2rem] flex items-center gap-3 px-6 py-3">
+    <div className="w-full max-w-[700px] mx-auto mb-8 px-6 relative z-50">
+      <div className="p-[2px] rounded-[2.5rem] animate-siri-glow shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-300 focus-within:shadow-[0_12px_40px_rgba(161,140,209,0.4)]">
+        <div className="bg-white/70 backdrop-blur-3xl rounded-[2.5rem] flex items-end gap-3 px-6 py-3.5 border border-white/60 shadow-[inset_0_1px_4px_rgba(255,255,255,0.8)]">
+          <button
+            type="button"
+            aria-label="Add attachment"
+            className="flex-shrink-0 text-black/40 hover:text-black transition-colors p-2 -ml-2 mb-0.5 rounded-full hover:bg-black/5"
+          >
+            <Plus className="w-5 h-5 stroke-[2.5]" />
+          </button>
+
           <textarea
             ref={textareaRef}
             value={value}
             onChange={(e) => {
               setValue(e.target.value);
               e.target.style.height = "auto";
-              e.target.style.height = `${Math.min(e.target.scrollHeight, 120)}px`;
+              e.target.style.height = `${Math.min(e.target.scrollHeight, 150)}px`;
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
@@ -39,31 +48,30 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
                 handleSend();
               }
             }}
-            placeholder="Ask a question about your documents…"
+            placeholder="Ask Siri or type a prompt..."
             rows={1}
             disabled={disabled}
-            className="flex-1 resize-none bg-transparent text-lg text-white/90 outline-none placeholder:text-white/40 leading-relaxed py-1"
+            className="flex-1 resize-none bg-transparent text-[1.1rem] text-black font-medium outline-none placeholder:text-black/40 leading-relaxed py-2 max-h-[150px]"
           />
-          <button
-            onClick={handleSend}
-            disabled={disabled || !value.trim()}
-            aria-label="Send"
-            className="flex-shrink-0 text-white/60 hover:text-white transition-colors disabled:opacity-30"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+
+          {value.trim() ? (
+            <button
+              onClick={handleSend}
+              disabled={disabled}
+              aria-label="Send"
+              className="flex-shrink-0 bg-black text-white rounded-full p-2.5 mb-1 hover:scale-105 transition-transform shadow-md disabled:opacity-40"
             >
-              <path d="M12 19V5" />
-              <path d="M5 12l7-7 7 7" />
-            </svg>
-          </button>
+              <Send className="w-4 h-4 ml-0.5" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              aria-label="Dictate"
+              className="flex-shrink-0 text-black/40 hover:text-black transition-colors p-2 mb-1 rounded-full hover:bg-black/5"
+            >
+              <Mic className="w-5 h-5 stroke-[2.5]" />
+            </button>
+          )}
         </div>
       </div>
     </div>

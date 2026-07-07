@@ -1,8 +1,8 @@
 "use client";
 
+import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { GlassButton } from "@/components/glass/GlassButton";
 import { SessionListItem } from "@/components/sessions/SessionListItem";
 import { createSession, deleteSession, listSessions } from "@/lib/api/sessions";
 import type { ChatSessionOut } from "@/lib/types";
@@ -46,11 +46,20 @@ export function SessionList({ activeSessionId, onSelect }: SessionListProps) {
   };
 
   return (
-    <div className="flex h-full flex-col gap-3 p-4">
-      <GlassButton variant="panel" onClick={handleNewSession} className="w-full">
-        + New chat
-      </GlassButton>
-      <div className="flex-1 space-y-2 overflow-y-auto">
+    <div className="p-4 mt-auto">
+      <div className="mb-3 flex items-center justify-between px-2">
+        <h3 className="text-xs font-bold text-black/40 uppercase tracking-wider">
+          Recent Chats
+        </h3>
+        <button
+          onClick={handleNewSession}
+          aria-label="New chat"
+          className="rounded-full p-1 text-black/40 transition hover:bg-black/5 hover:text-black/70"
+        >
+          <Plus className="w-4 h-4" />
+        </button>
+      </div>
+      <div className="space-y-1">
         {sessions.map((session) => (
           <SessionListItem
             key={session.id}

@@ -20,9 +20,9 @@ export function MessageList({ messages, isStreaming, streamingText }: MessageLis
   }, [messages, streamingText]);
 
   return (
-    <div className="flex-1 space-y-3 overflow-y-auto px-4 py-6">
+    <div className="flex-1 overflow-y-auto pb-32 flex flex-col scroll-smooth pt-8">
       {messages.length === 0 && !isStreaming && (
-        <div className="glass-panel mx-auto max-w-md px-6 py-8 text-center text-sm opacity-70">
+        <div className="apple-glass-base mx-auto max-w-md rounded-[1.5rem] px-6 py-8 text-center text-sm text-black/60">
           Upload a document and ask a question to get started.
         </div>
       )}

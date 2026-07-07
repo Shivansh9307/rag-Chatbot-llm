@@ -2,22 +2,8 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
-
-  --glass-tint: 0 0 0;
-  --glass-tint-alpha: 0.4;
-  --glass-tint-alpha-strong: 0.6;
-  --glass-border: 255 255 255;
-  --glass-border-alpha: 0.1;
-  --glass-shadow-alpha: 0.4;
-
-  --glass-blur-sm: 12px;
-  --glass-blur-md: 24px;
-  --glass-blur-lg: 64px;
-
-  --radius-md: 1.25rem;
-  --radius-lg: 1.75rem;
+  --background: #f0f0f5;
+  --foreground: #1c1c1e;
 }
 
 @theme inline {
@@ -39,7 +25,7 @@ body {
   overflow-x: hidden;
 }
 
-@keyframes apple-glow {
+@keyframes siri-glow {
   0% {
     background-position: 0% 50%;
   }
@@ -51,9 +37,21 @@ body {
   }
 }
 
+@keyframes ambient-drift {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
 .animate-siri-glow {
   background-size: 200% 200%;
-  animation: apple-glow 4s ease infinite;
+  animation: siri-glow 4s ease infinite;
   background-image: linear-gradient(
     60deg,
     #4facfe,
@@ -65,57 +63,86 @@ body {
   );
 }
 
+.animate-ambient-drift {
+  animation: ambient-drift 30s linear infinite;
+}
+
+.animate-ambient-drift-reverse {
+  animation: ambient-drift 40s linear infinite reverse;
+}
+
 @layer components {
-  .glass-panel {
-    background-color: rgb(var(--glass-tint) / var(--glass-tint-alpha));
-    border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
-    backdrop-filter: blur(var(--glass-blur-lg)) saturate(160%);
-    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(160%);
-    box-shadow: 0 8px 32px rgb(0 0 0 / var(--glass-shadow-alpha));
-    border-radius: var(--radius-lg);
-    color: #fff;
+  /* Core Apple Liquid Glass Effect */
+  .apple-glass-base {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(48px) saturate(200%);
+    -webkit-backdrop-filter: blur(48px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 24px 48px -12px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 0 rgba(255, 255, 255, 0.3);
   }
 
-  .glass-panel-strong {
-    background-color: rgb(var(--glass-tint) / var(--glass-tint-alpha-strong));
-    border: 1px solid rgb(var(--glass-border) / var(--glass-border-alpha));
-    backdrop-filter: blur(var(--glass-blur-lg)) saturate(160%);
-    -webkit-backdrop-filter: blur(var(--glass-blur-lg)) saturate(160%);
-    box-shadow: 0 12px 40px rgb(0 0 0 / var(--glass-shadow-alpha));
-    border-radius: var(--radius-lg);
-    color: #fff;
-  }
-
-  .apple-glass-panel {
-    @apply bg-black/40 backdrop-blur-3xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.4)] text-white;
-  }
-
-  .glass-pill {
-    background-color: rgb(255 255 255 / 0.1);
-    border: 1px solid rgb(var(--glass-border) / 0.2);
-    backdrop-filter: blur(var(--glass-blur-md)) saturate(160%);
-    -webkit-backdrop-filter: blur(var(--glass-blur-md)) saturate(160%);
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.3);
+  /* Segmented control / toolbar pill groups */
+  .apple-glass-group {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow:
+      0 2px 8px -1px rgba(0, 0, 0, 0.05),
+      inset 0 1px 1px rgba(255, 255, 255, 1),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.4);
     border-radius: 9999px;
-    color: #fff;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
   }
 
-  .apple-glass-pill {
-    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg text-white rounded-full;
+  .apple-icon-btn {
+    color: #1c1c1e;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.6rem;
   }
 
-  .glass-interactive {
-    transition:
-      transform 150ms ease,
-      box-shadow 150ms ease,
-      background-color 150ms ease;
+  .apple-icon-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
   }
 
-  .glass-interactive:hover {
-    transform: translateY(-1px);
+  .apple-icon-btn:active {
+    background: rgba(0, 0, 0, 0.1);
   }
 
-  .glass-interactive:active {
-    transform: scale(0.98);
+  .apple-separator {
+    width: 1px;
+    height: 18px;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 0 2px;
   }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
