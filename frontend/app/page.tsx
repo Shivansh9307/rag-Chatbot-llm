@@ -25,7 +25,9 @@ export default function Home() {
     <div className="fixed inset-0 font-sans selection:bg-blue-500/30 overflow-hidden">
       <VibrantWallpaper />
 
-      <div className="absolute inset-0 flex flex-col overflow-hidden bg-white/10 backdrop-blur-2xl">
+      {/* No backdrop-filter here: it would form a backdrop root and stop the
+          chat input's own backdrop blur from sampling the messages behind it. */}
+      <div className="absolute inset-0 flex flex-col overflow-hidden bg-white/10">
         <LiquidToolbar
           title="Chat"
           onToggleSidebar={() => setIsSidebarOpen((v) => !v)}
