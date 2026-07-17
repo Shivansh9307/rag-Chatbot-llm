@@ -1,11 +1,10 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { SessionListItem } from "@/components/sessions/SessionListItem";
-import { createSession, deleteSession, listSessions } from "@/lib/api/sessions";
-import type { ChatSessionOut } from "@/lib/types";
+import { useSessionsStore } from "@/store/sessionsStore";
 
 type SessionListProps = {
   activeSessionId: string | null;
@@ -13,35 +12,25 @@ type SessionListProps = {
 };
 
 export function SessionList({ activeSessionId, onSelect }: SessionListProps) {
-  const [sessions, setSessions] = useState<ChatSessionOut[]>([]);
-
-  const refresh = async () => {
-    const result = await listSessions();
-    setSessions(result);
-    return result;
-  };
+  const sessions = useSessionsStore((s) => s.sessions);
+  const fetchSessions = useSessionsStore((s) => s.fetchSessions);
+  const createSession = useSessionsStore((s) => s.createSession);
+  const deleteSession = useSessionsStore((s) => s.deleteSession);
 
   useEffect(() => {
-    let ignore = false;
-    listSessions().then((result) => {
-      if (!ignore) setSessions(result);
-    });
-    return () => {
-      ignore = true;
-    };
-  }, []);
+    fetchSessions();
+  }, [fetchSessions]);
 
   const handleNewSession = async () => {
     const session = await createSession();
-    await refresh();
     onSelect(session.id);
   };
 
   const handleDelete = async (sessionId: string) => {
     await deleteSession(sessionId);
-    const result = await refresh();
-    if (activeSessionId === sessionId && result.length > 0) {
-      onSelect(result[0].id);
+    const remaining = useSessionsStore.getState().sessions;
+    if (activeSessionId === sessionId && remaining.length > 0) {
+      onSelect(remaining[0].id);
     }
   };
 

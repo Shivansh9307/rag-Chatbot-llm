@@ -1,43 +1,29 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 import { DocumentListItem } from "@/components/documents/DocumentListItem";
 import { DocumentUploadDropzone } from "@/components/documents/DocumentUploadDropzone";
-import {
-  deleteDocument,
-  listDocuments,
-  uploadDocument,
-} from "@/lib/api/documents";
-import type { DocumentOut } from "@/lib/types";
+import { useDocumentsStore } from "@/store/documentsStore";
 
 const POLL_INTERVAL_MS = 2000;
 
 export function DocumentSidebar() {
-  const [documents, setDocuments] = useState<DocumentOut[]>([]);
-  const [isUploading, setIsUploading] = useState(false);
+  const documents = useDocumentsStore((s) => s.documents);
+  const isUploading = useDocumentsStore((s) => s.isUploading);
+  const fetchDocuments = useDocumentsStore((s) => s.fetchDocuments);
+  const upload = useDocumentsStore((s) => s.upload);
+  const remove = useDocumentsStore((s) => s.remove);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const refresh = useCallback(async () => {
-    const result = await listDocuments();
-    setDocuments(result);
-    return result;
-  }, []);
-
   useEffect(() => {
-    let ignore = false;
-    listDocuments().then((result) => {
-      if (!ignore) setDocuments(result);
-    });
-    return () => {
-      ignore = true;
-    };
-  }, []);
+    fetchDocuments();
+  }, [fetchDocuments]);
 
   useEffect(() => {
     const hasProcessing = documents.some((d) => d.status === "processing");
     if (hasProcessing && !pollRef.current) {
-      pollRef.current = setInterval(refresh, POLL_INTERVAL_MS);
+      pollRef.current = setInterval(fetchDocuments, POLL_INTERVAL_MS);
     }
     if (!hasProcessing && pollRef.current) {
       clearInterval(pollRef.current);
@@ -49,22 +35,7 @@ export function DocumentSidebar() {
         pollRef.current = null;
       }
     };
-  }, [documents, refresh]);
-
-  const handleUpload = async (file: File) => {
-    setIsUploading(true);
-    try {
-      await uploadDocument(file);
-      await refresh();
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const handleDelete = async (documentId: string) => {
-    await deleteDocument(documentId);
-    await refresh();
-  };
+  }, [documents, fetchDocuments]);
 
   return (
     <div className="p-4">
@@ -72,11 +43,11 @@ export function DocumentSidebar() {
         Knowledge Base
       </h3>
       <div className="mb-2 px-0">
-        <DocumentUploadDropzone onUpload={handleUpload} disabled={isUploading} />
+        <DocumentUploadDropzone onUpload={upload} disabled={isUploading} />
       </div>
       <div className="space-y-1">
         {documents.map((doc) => (
-          <DocumentListItem key={doc.id} doc={doc} onDelete={() => handleDelete(doc.id)} />
+          <DocumentListItem key={doc.id} doc={doc} onDelete={() => remove(doc.id)} />
         ))}
       </div>
     </div>

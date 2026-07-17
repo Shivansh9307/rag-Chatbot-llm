@@ -29,7 +29,7 @@ export function MessageBubble({ role, content, citations, children }: MessageBub
         <div className="flex items-center gap-2 mb-4">
           <Sparkles className="w-5 h-5 text-purple-500" />
           <span className="text-xs font-bold uppercase tracking-widest text-black/50">
-            Apple Intelligence
+            AI Answer
           </span>
         </div>
 

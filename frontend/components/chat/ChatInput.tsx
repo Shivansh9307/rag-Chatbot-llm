@@ -48,7 +48,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
                 handleSend();
               }
             }}
-            placeholder="Ask Siri or type a prompt..."
+            placeholder="Ask a question about your documents..."
             rows={1}
             disabled={disabled}
             className="flex-1 resize-none bg-transparent text-[1.1rem] text-black font-medium outline-none placeholder:text-black/40 leading-relaxed py-2 max-h-[150px]"
